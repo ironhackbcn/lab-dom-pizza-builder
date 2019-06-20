@@ -5,12 +5,13 @@ let state = {
   whiteSauce: false,
   glutenFreeCrust: false
 };
-let pepperonni = 1;
-let mushrooms = 1;
-let greePepper = 1;
-let whiteSauce = 3;
-let glutenFreeCrust = 5;
-let CheesePizza = 10;
+let prices = {
+  pepperonni: [1, "pepperonni"],
+  mushrooms: [1, "mushrooms"],
+  greenPeppers: [1, "green peppers"],
+  whiteSauce: [3, "white sauce"],
+  glutenFreeCrust: [5, "gluten-free crust"]
+};
 
 window.addEventListener("load", init);
 
@@ -53,7 +54,26 @@ function renderButtons(typeOfButton, state, message) {
 }
 
 function renderPrice() {
-  let price;
+  let textproof = "";
+  let finalPrice = 10;
+  let li;
+  let contentPrice = document
+    .getElementsByClassName("price")[0]
+    .getElementsByTagName("ul")[0];
+  contentPrice.innerHTML = ""; //Here reset de content.
+  let theBill = document
+    .getElementsByClassName("price")[0]
+    .getElementsByTagName("strong")[0];
+  theBill.innerHTML = "";
+  for (let states in state) {
+    if (state[states] === true) {
+      finalPrice += prices[states][0];
+      li = document.createElement("li");
+      li.innerHTML = `$${prices[states][0]} ${prices[states][1]}`;
+      contentPrice.appendChild(li);
+    }
+  }
+  theBill.innerHTML = "$" + finalPrice.toString();
 }
 
 function renderPepperonni() {
@@ -83,7 +103,7 @@ function renderEverything() {
   renderMushrooms();
   renderGreenPepper();
   renderWhiteSauce();
-  renderGlutenFreeCrust()
+  renderGlutenFreeCrust();
   renderPrice();
 }
 
