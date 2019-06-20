@@ -1,85 +1,128 @@
-// Write your Pizza Builder JavaScript in this file.
-
-// Constants 
-var basePrice = 10
-var ingredients = {
-  pepperonni: {name: 'Pepperonni', price: 1},
-  mushrooms: {name: 'Mushrooms', price: 1},
-  greenPeppers: {name: 'Green Peppers', price: 1},
-  whiteSauce: {name: 'White sauce', price: 3},
-  glutenFreeCrust: {name: 'Gluten-free crust', price: 5}
-}
-
-// Initial value of the state (the state values can change over time)
-var state = {
+let state = {
   pepperonni: true,
   mushrooms: true,
   greenPeppers: true,
   whiteSauce: false,
   glutenFreeCrust: false
+};
+let prices = {
+  pepperonni: [1, "pepperonni"],
+  mushrooms: [1, "mushrooms"],
+  greenPeppers: [1, "green peppers"],
+  whiteSauce: [3, "white sauce"],
+  glutenFreeCrust: [5, "gluten-free crust"]
+};
+
+window.addEventListener("load", init);
+
+function init() {
+  renderEverything();
+  let buttonPepperonni = document.getElementsByClassName("btn-pepperonni");
+  buttonPepperonni[0].addEventListener("click", pepperonniClick);
+  let buttonMushrooms = document.getElementsByClassName("btn-mushrooms");
+  buttonMushrooms[0].addEventListener("click", mushroomsClick);
+  let buttonGreePepper = document.getElementsByClassName("btn-green-peppers");
+  buttonGreePepper[0].addEventListener("click", greenPepperClick);
+  let buttonSauce = document.getElementsByClassName("btn-sauce");
+  buttonSauce[0].addEventListener("click", whiteSauceClick);
+  let buttonCrust = document.getElementsByClassName("btn-crust");
+  buttonCrust[0].addEventListener("click", GlutenFreeCrustClick);
+}
+function pepperonniClick() {
+  state.pepperonni = !state.pepperonni;
+  renderEverything();
+}
+function mushroomsClick() {
+  state.mushrooms = !state.mushrooms;
+  renderEverything();
+}
+function greenPepperClick() {
+  state.greenPeppers = !state.greenPeppers;
+  renderEverything();
+}
+function whiteSauceClick() {
+  state.whiteSauce = !state.whiteSauce;
+  renderEverything();
+}
+function GlutenFreeCrustClick() {
+  state.glutenFreeCrust = !state.glutenFreeCrust;
+  renderEverything();
 }
 
-// This function takes care of rendering the pizza based on the state
-// This function is triggered once at the begining and everytime the state is changed
-function renderEverything() {
-  renderPepperonni()
-  renderMushrooms()
-  renderGreenPeppers()
-  renderWhiteSauce()
-  renderGlutenFreeCrust()
-
-  renderButtons()
-  renderPrice()
-}
-
-function renderPepperonni() {
-  document.querySelectorAll('.pep').forEach(function($pep){
-    if (state.pepperonni) {
-      $pep.style.visibility = "visible";
-    }
-    else {
-      $pep.style.visibility = "hidden";
-    }
-  })
-}
-
-function renderMushrooms() {
-  // Iteration 1: set the visibility of `<section class="mushroom">`
-}
-
-function renderGreenPeppers() {
-  // Iteration 1: set the visibility of `<section class="green-pepper">`
-}
-
-function renderWhiteSauce() {
-  // Iteration 2: add/remove the class "sauce-white" of `<section class="sauce">`
-}
-
-function renderGlutenFreeCrust() {
-  // Iteration 2: add/remove the class "crust-gluten-free" of `<section class="crust">`
-}
-
-function renderButtons() {
-  // Iteration 3: add/remove the class "active" of each `<button class="btn">`
+function renderButtons(typeOfButton, state, message) {
+  activeOrNotButtons(typeOfButton, state, message);
 }
 
 function renderPrice() {
-  // Iteration 4: change the HTML of `<aside class="panel price">`
+  let textproof = "";
+  let finalPrice = 10;
+  let li;
+  let contentPrice = document
+    .getElementsByClassName("price")[0]
+    .getElementsByTagName("ul")[0];
+  contentPrice.innerHTML = ""; //Here reset de content.
+  let theBill = document
+    .getElementsByClassName("price")[0]
+    .getElementsByTagName("strong")[0];
+  theBill.innerHTML = "";
+  for (let states in state) {
+    if (state[states] === true) {
+      finalPrice += prices[states][0];
+      li = document.createElement("li");
+      li.innerHTML = `$${prices[states][0]} ${prices[states][1]}`;
+      contentPrice.appendChild(li);
+    }
+  }
+  theBill.innerHTML = "$" + finalPrice.toString();
 }
 
-
-renderEverything()
-
-// Iteration 1: Example of a click event listener on `<button class="btn btn-pepperonni">`
-document.querySelector('.btn.btn-pepperonni').onclick = function() {
-  state.pepperonni = !state.pepperonni
-  renderEverything()
+function renderPepperonni() {
+  showHideIngredients("pep", state.pepperonni);
+  renderButtons("btn-pepperonni", state.pepperonni, "active");
+}
+function renderMushrooms() {
+  showHideIngredients("cap", state.mushrooms);
+  showHideIngredients("stem", state.mushrooms);
+  renderButtons("btn-mushrooms", state.mushrooms, "active");
+}
+function renderGreenPepper() {
+  showHideIngredients("green-pepper", state.greenPeppers);
+  renderButtons("btn-green-peppers", state.greenPeppers, "active");
+}
+function renderWhiteSauce() {
+  renderButtons("btn-sauce", state.whiteSauce, "active");
+  activeOrNotButtons("sauce", state.whiteSauce, "sauce-white");
+}
+function renderGlutenFreeCrust() {
+  renderButtons("btn-crust", state.glutenFreeCrust, "active");
+  activeOrNotButtons("crust", state.glutenFreeCrust, "crust-gluten-free");
 }
 
-// Iteration 1: Add click event listener on `<button class="btn btn-mushrooms">`
+function renderEverything() {
+  renderPepperonni();
+  renderMushrooms();
+  renderGreenPepper();
+  renderWhiteSauce();
+  renderGlutenFreeCrust();
+  renderPrice();
+}
 
-// Iteration 1: Add click event listener on `<button class="btn btn-green-peppers">`
+function showHideIngredients(nameClass, stateOfIngredients) {
+  let ingredient = document.getElementsByClassName(nameClass);
+  ingredient.classList;
+  for (let i = 0; i < ingredient.length; i++) {
+    if (stateOfIngredients === true) {
+      ingredient[i].style.display = "block";
+    } else if (stateOfIngredients === false) {
+      ingredient[i].style.display = "none";
+    }
+  }
+}
 
-// Iteration 2: Add click event listener on `<button class="btn btn-sauce">`
-
-// Iteration 2: Add click event listener on `<button class="btn btn-crust">`
+function activeOrNotButtons(ingredient, state, message) {
+  if (state === false) {
+    document.getElementsByClassName(ingredient)[0].classList.remove(message);
+  } else if (state === true) {
+    document.getElementsByClassName(ingredient)[0].classList.add(message);
+  }
+}
