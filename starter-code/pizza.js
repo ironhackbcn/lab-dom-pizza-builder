@@ -3,66 +3,48 @@ let state = {
   mushrooms: true,
   greenPeppers: true,
   whiteSauce: false,
-  glutenFreeCrust: fakse
+  glutenFreeCrust: false
 };
+let pepperonni = 1;
+let mushrooms = 1;
+let greePepper = 1;
+let whiteSauce = 3;
+let glutenFreeCrust = 5;
+let CheesePizza = 10;
 
 window.addEventListener("load", init);
 
 function init() {
+  renderEverything();
   let buttonPepperonni = document.getElementsByClassName("btn-pepperonni");
-  buttonPepperonni[0].addEventListener("click", renderPepperonni);
+  buttonPepperonni[0].addEventListener("click", pepperonniClick);
   let buttonMushrooms = document.getElementsByClassName("btn-mushrooms");
-  buttonMushrooms[0].addEventListener("click", renderMushrooms);
+  buttonMushrooms[0].addEventListener("click", mushroomsClick);
   let buttonGreePepper = document.getElementsByClassName("btn-green-peppers");
-  buttonGreePepper[0].addEventListener("click", renderGreenPeppers);
+  buttonGreePepper[0].addEventListener("click", greenPepperClick);
   let buttonSauce = document.getElementsByClassName("btn-sauce");
-  buttonSauce[0].addEventListener("click", renderWhiteSauce);
+  buttonSauce[0].addEventListener("click", whiteSauceClick);
   let buttonCrust = document.getElementsByClassName("btn-crust");
-  buttonCrust[0].addEventListener("click", renderGlutenFreeCrust);
+  buttonCrust[0].addEventListener("click", GlutenFreeCrustClick);
 }
-
-function renderPepperonni() {
+function pepperonniClick() {
   state.pepperonni = !state.pepperonni;
-  renderButtons("btn-pepperonni", state.pepperonni, "active");
   renderEverything();
 }
-
-function renderMushrooms() {
+function mushroomsClick() {
   state.mushrooms = !state.mushrooms;
-  renderButtons("btn-mushrooms", state.mushrooms, "active");
   renderEverything();
 }
-
-function renderGreenPeppers() {
+function greenPepperClick() {
   state.greenPeppers = !state.greenPeppers;
-  renderButtons("btn-green-peppers", state.greenPeppers, "active");
   renderEverything();
 }
-
-function renderWhiteSauce() {
+function whiteSauceClick() {
   state.whiteSauce = !state.whiteSauce;
-  if (state.whiteSauce === false) {
-    document.getElementsByClassName("sauce")[0].classList.remove("sauce-white");
-  } else if (state.whiteSauce === true) {
-    document.getElementsByClassName("sauce")[0].classList.add("sauce-white");
-  }
-  renderButtons("btn-sauce", state.whiteSauce, "active");
   renderEverything();
 }
-
-function renderGlutenFreeCrust() {
+function GlutenFreeCrustClick() {
   state.glutenFreeCrust = !state.glutenFreeCrust;
-
-  if (state.glutenFreeCrust === false) {
-    document
-      .getElementsByClassName("crust")[0]
-      .classList.remove("crust-gluten-free");
-  } else if (state.glutenFreeCrust === true) {
-    document
-      .getElementsByClassName("crust")[0]
-      .classList.add("crust-gluten-free");
-  }
-  renderButtons("btn-crust", state.pepperonni, "active");
   renderEverything();
 }
 
@@ -70,15 +52,39 @@ function renderButtons(typeOfButton, state, message) {
   activeOrNotButtons(typeOfButton, state, message);
 }
 
-function renderPrice() {}
+function renderPrice() {
+  let price;
+}
 
-function renderEverything() {
+function renderPepperonni() {
   showHideIngredients("pep", state.pepperonni);
+  renderButtons("btn-pepperonni", state.pepperonni, "active");
+}
+function renderMushrooms() {
   showHideIngredients("cap", state.mushrooms);
   showHideIngredients("stem", state.mushrooms);
+  renderButtons("btn-mushrooms", state.mushrooms, "active");
+}
+function renderGreenPepper() {
   showHideIngredients("green-pepper", state.greenPeppers);
-  showHideIngredients("sauce", state.whiteSauce);
-  showHideIngredients("crust", state.glutenFreeCrust);
+  renderButtons("btn-green-peppers", state.greenPeppers, "active");
+}
+function renderWhiteSauce() {
+  renderButtons("btn-sauce", state.whiteSauce, "active");
+  activeOrNotButtons("sauce", state.whiteSauce, "sauce-white");
+}
+function renderGlutenFreeCrust() {
+  renderButtons("btn-crust", state.glutenFreeCrust, "active");
+  activeOrNotButtons("crust", state.glutenFreeCrust, "crust-gluten-free");
+}
+
+function renderEverything() {
+  renderPepperonni();
+  renderMushrooms();
+  renderGreenPepper();
+  renderWhiteSauce();
+  renderGlutenFreeCrust()
+  renderPrice();
 }
 
 function showHideIngredients(nameClass, stateOfIngredients) {
